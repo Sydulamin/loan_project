@@ -1,0 +1,149 @@
+{% load crispy_forms_tags %}
+
+<form method="POST" action="">
+    {% csrf_token %}
+
+    <!-- Project Name -->
+    <div class="form-group">
+        <label for="id_name">Project Name</label>
+        <input type="text" id="id_name" name="name" class="form-control" required>
+    </div>
+
+     <div class="form-group">
+        <label for="id_project_support">
+            <input type="checkbox" id="id_project_support" name="project_support" value="True">
+            Project Support
+        </label>
+    </div>
+
+    <!-- Budget Support (Boolean) -->
+    <div class="form-group">
+        <label for="id_budget_support">
+            <input type="checkbox" id="id_budget_support" name="budget_support" value="True">
+            Budget Support
+        </label>
+    </div>
+
+    <!-- Loan or Grant or Loan and Grant Selection -->
+    <div class="form-group">
+        <label for="id_loan_or_grant">Loan or Grant</label>
+        <select id="id_loan_or_grant" name="loan_or_grant" class="form-control">
+            <option value="">None</option>
+            <option value="Loan">Loan</option>
+            <option value="Grant">Grant</option>
+            <option value="LoanAndGrant">Loan and Grant</option>
+        </select>
+    </div>
+
+    <!-- Amount as per Agreement Currency (Common Field) -->
+    <div class="form-group" id="common_amount_field">
+        <label for="id_amount_as_per_agreement_currency">Amount as per Agreement Currency</label>
+        <input type="number" id="id_amount_as_per_agreement_currency" name="amount_as_per_agreement_currency"
+               class="form-control" step="0.01" required>
+    </div>
+
+    <!-- Common Field for Loan and Grant -->
+    <div class="form-group" id="common_field_loan_grant">
+        <label for="id_common_field">Loan/Grant Specific Details</label>
+        <textarea id="id_common_field" name="common_field" class="form-control" rows="3"
+                  placeholder="Details applicable to both Loan and Grant"></textarea>
+    </div>
+
+    <!-- Loan Specific Fields (Visible when Loan is selected or Loan and Grant is selected) -->
+    <div class="form-group" id="loan_amount_field" style="display: none;">
+        <label for="id_loan_amount">Loan Amount</label>
+        <input type="number" id="id_loan_amount" name="loan_amount" class="form-control" step="0.01"
+               placeholder="Enter loan amount">
+    </div>
+
+    <div class="form-group" id="loan_duration_field" style="display: none;">
+        <label for="id_loan_duration">Loan Duration (Years)</label>
+        <input type="number" id="id_loan_duration" name="loan_duration" class="form-control"
+               placeholder="Enter loan duration in years">
+    </div>
+
+    <div class="form-group" id="loan_terms_field" style="display: none;">
+        <label for="id_loan_terms">Loan Terms</label>
+        <textarea id="id_loan_terms" name="loan_terms" class="form-control" rows="3"
+                  placeholder="Enter loan terms"></textarea>
+    </div>
+
+    <!-- Grant Specific Fields (Visible when Grant is selected or Loan and Grant is selected) -->
+    <div class="form-group" id="grant_amount_field" style="display: none;">
+        <label for="id_grant_amount">Grant Amount</label>
+        <input type="number" id="id_grant_amount" name="grant_amount" class="form-control" step="0.01"
+               placeholder="Enter grant amount">
+    </div>
+
+    <div class="form-group" id="grant_terms_field" style="display: none;">
+        <label for="id_grant_terms">Grant Terms</label>
+        <textarea id="id_grant_terms" name="grant_terms" class="form-control" rows="3"
+                  placeholder="Enter grant terms"></textarea>
+    </div>
+
+    <!-- Status -->
+    <div class="form-group">
+        <label for="id_status">Status</label>
+        <select id="id_status" name="status" class="form-control">
+            <option value="Ongoing">Ongoing</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+        </select>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<!-- JavaScript to Show/Hide Fields Based on Loan, Grant, or Loan and Grant Selection -->
+<script>
+  const loanOrGrantSelect = document.getElementById('id_loan_or_grant');
+
+  // Loan specific fields
+  const loanAmountField = document.getElementById('loan_amount_field');
+  const loanDurationField = document.getElementById('loan_duration_field');
+  const loanTermsField = document.getElementById('loan_terms_field');
+
+  // Grant specific fields
+  const grantAmountField = document.getElementById('grant_amount_field');
+  const grantTermsField = document.getElementById('grant_terms_field');
+
+  // Common fields for Loan and Grant
+  const commonAmountField = document.getElementById('common_amount_field');
+  const commonFieldLoanGrant = document.getElementById('common_field_loan_grant');
+
+  // Show/Hide fields based on Loan or Grant or Loan and Grant selection
+  loanOrGrantSelect.addEventListener('change', function() {
+    // Reset all fields to hide them first
+    loanAmountField.style.display = 'none';
+    loanDurationField.style.display = 'none';
+    loanTermsField.style.display = 'none';
+
+    grantAmountField.style.display = 'none';
+    grantTermsField.style.display = 'none';
+
+    // Common fields will always be shown
+    commonAmountField.style.display = 'block';
+    commonFieldLoanGrant.style.display = 'block';
+
+    // Show fields based on selection
+    if (loanOrGrantSelect.value === "Loan") {
+      loanAmountField.style.display = 'block';
+      loanDurationField.style.display = 'block';
+      loanTermsField.style.display = 'block';
+    } else if (loanOrGrantSelect.value === "Grant") {
+      grantAmountField.style.display = 'block';
+      grantTermsField.style.display = 'block';
+    } else if (loanOrGrantSelect.value === "LoanAndGrant") {
+      // Show both Loan and Grant fields when "Loan and Grant" is selected
+      loanAmountField.style.display = 'block';
+      loanDurationField.style.display = 'block';
+      loanTermsField.style.display = 'block';
+
+      grantAmountField.style.display = 'block';
+      grantTermsField.style.display = 'block';
+    }
+  });
+
+
+</script>

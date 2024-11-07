@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block extra_head %}
+
+{% endblock %}
+
+{% block extra_body %}
+
+{% endblock %}
+
+<!-- Main Content Goes Here..... -->
+{% block content %}
+<div class="container mt-5">
+
+  <br>
+  <h3 class="text-center">Borrowing Application</h3>
+  <br>
+  <h5 class="text-center">--Insert Data</h5>
+  <br>
+
+{% include 'wing_form.html' %}
+
+</div>
+
+<div class="container-fluid">
+  <div class="mt-5">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Name of the Projects</th>
+          <th scope="col">Currency</th>
+          <th scope="col">Amount as per Agreement Currency</th>
+          <th scope="col">Amount in Equivalent Million US$</th>
+          <th scope="col">Date of Signature</th>
+          <th scope="col">Development Partner</th>
+          <th scope="col">Co-Financer</th>
+          <th scope="col">Loan/Grant</th>
+          <th scope="col">Status</th>
+          <th scope="col">Sector</th>
+          <th scope="col">If Loan then Conditionality.</th>
+          <th scope="col">Current Status</th>
+          <th scope="col">Previous Month Status</th>
+          <th scope="col">Comments</th>
+          <th scope="col">Update</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for obj in queryset %}
+        <tr>
+          <td>{{ obj.name }}</td>
+          <td>{{ obj.currency }}</td>
+          <td>{{ obj.amount_as_per_agreement_currency }}</td>
+          <td>{{ obj.amount_in_equivalent_million_us }}</td>
+          <td>{{ obj.date_of_signature|date:'M Y' }}</td>
+          <td>{{ obj.development_partner }}</td>
+          <td>
+            {% for co in obj.co_financer.all %}
+              {{ co }},
+            {% endfor %}
+          </td>
+          <td>{{ obj.loan_or_grant }}</td>
+          <td>{{ obj.status }}</td>
+          <td>{{ obj.sector }}</td>
+          <td>{{ obj.if_loan_conditionally }}</td>
+          <td>{{ obj.current_status }}</td>
+          <td>{{ obj.previous_month_status }}</td>
+          <td>{{ obj.comments }}</td>
+          <td>
+            <a href="{% url 'update-wing' obj.id %}" class="btn btn-info">Update</a>
+          </td>
+        </tr>
+        {% endfor %}
+
+        <tr>
+          <th scope="col">Total Signed</th>
+          <th scope="col">0.00</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col">Loan</th>
+          <th scope="col">0.000</th>
+          <th></th>
+          <th scope="col">Grant</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block extra_footer %}
+<script>
+  $(document).ready(function() {
+    $('#id_co_financer').select2();
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Wing
+{% endblock %}
+
+{% block extra_head %}
+
+{% endblock %}
+
+{% block extra_body %}
+
+{% endblock %}
+
+<!-- Main Content Goes Here..... -->
+{% block content %}
+<div class="container mt-5">
+
+{% include 'wing-filter.html' %}
+
+</div>
+<br><br>
+
+<div class="container-fluid">
+  <div class="mt-5">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Name of the Projects</th>
+          <th scope="col">Currency</th>
+          <th scope="col">Amount  as per Agreement Currency</th>
+          <th scope="col">Amount in equivalent Million US$</th>
+          <th scope="col">Date of Signature</th>
+          <th scope="col">Development Partner</th>
+          <th scope="col">Co-Financer</th>
+          <th scope="col">Loan/Grant</th>
+          <th scope="col">Sector</th>
+          <th scope="col">Comments</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for obj in queryset %}
+        <tr>
+          <td>{{ obj.name }}</td>
+          <td>{{ obj.currency }}</td>
+          <td>{{ obj.amount_as_per_agreement_currency }}</td>
+          <td>{{ obj.amount_in_equivalent_million_us }}</td>
+          <td>{{ obj.date_of_signature|date:'M Y' }}</td>
+          <td>{{ obj.development_partner }}</td>
+          <td>
+            {% for co in obj.co_financer.all %}
+              {{ co }},
+            {% endfor %}
+          </td>
+          <td>{{ obj.loan_or_grant }}</td>
+          <td>{{ obj.sector }}</td>
+          <td>{{ obj.comments }}</td>
+        </tr>
+        {% endfor %}
+
+        <tr>
+          <th scope="col">Total Signed</th>
+          <th scope="col">0.00</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col">Loan</th>
+          <th scope="col">0.000</th>
+          <th></th>
+          <th scope="col">Grant</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block extra_footer %}
+
+{% endblock %}
